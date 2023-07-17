@@ -32,7 +32,7 @@ class Robot(webdriver.Chrome, Level1):
         """
         Move on to the next step.
         """
-        next_button = self.find_elements(By.CLASS, 'Affordability-nextStep')
+        next_button = self.find_elements(By.CLASS_NAME, 'Affordability-nextStep')[0]
         next_button.click()
 
     def start(self):
