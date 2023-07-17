@@ -34,7 +34,7 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
     * 23_what_sort
     * 23_estimate_value
     * 3_same_term_as_existing
-        * 1_existing_term
+        * 2_existing_term
     * 3_outstanding_balance
     * 3_interest_only_basis
 #### Step 2

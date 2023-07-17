@@ -1,5 +1,5 @@
-from auto.indent.level_1 import Level1
 import constants as const
+from auto.indents.level1_paths import Level1Paths
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -7,8 +7,7 @@ from selenium.webdriver.common.by import By
 
 import pandas as pd
 
-
-class Robot(webdriver.Chrome, Level1):
+class Robot(webdriver.Chrome, Level1Paths):
     """
     Robot class which will perform automated scraping.
     """
@@ -42,20 +41,20 @@ class Robot(webdriver.Chrome, Level1):
         """
         print("Let's Go!")
 
+        # Open calculator
         self.open_calc()
-
-        self.close_cookies()
-
-        column = 'no_people_buying'
-        no_people_buying = self.data[column].values[0]
-        css_string = 'label[for="AffCalc-q0-NumberOfApplicants-'
-        self.select_option(
-            css_string=css_string, 
-            no_options=2, 
-            prob_column=column,
-            option=no_people_buying,
-        )
         
+        # Trigger step 1 chain of decisions
+        self.step1()
+        
+        # Move to step 2
+        self.next()
+        
+    def step1(self):
+        # Close cookies and choose number of people borrowing
+        self.step1_start()
+        
+        # What's the mortgage for?
         column = 'mortgage_purpose'
         purpose = self.data[column].values[0]
         css_string = 'label[for="AffCalc-q10-ApplicationType-'
@@ -65,67 +64,14 @@ class Robot(webdriver.Chrome, Level1):
             prob_column=column,
             option=purpose,
         )
-        
-        amount = self.data['123_amount_borrowed'].values[0]
-        borrowing_amount_input = 'AffCalc-q20-BorrowingAmount'
-        self.type_amount(
-            id_string=borrowing_amount_input,
-            amount=amount,
-        )
-        
-        term = self.data['123_mortgage_term'].values[0].split(",")
-        years = term[0]
-        months = term[1]
-        term_length_years = 'AffCalc-q30-MortgageTermYears'
-        self.type_amount(
-            id_string=term_length_years,
-            amount=years,
-        )
-        term_length_months = 'AffCalc-q30-MortgageTermMonths'
-        self.type_amount(
-            id_string=term_length_months,
-            amount=months,
-        )
-        
-        column = '12_ownership_type'
-        ownership_type_input = 'AffCalc-q40-OwnershipType'
-        purpose = self.data[column].values[0]
-        self.select_from_menu(
-            id_string=ownership_type_input,
-            no_options=5,
-            option=purpose,
-            prob_column=column,
-            plz_select=True,
-        )
-        
-        column = '1_found_new_home'
-        has_found_new_home = self.data[column].values[0]
-        css_string = 'label[for="AffCalc-q60-PropertyFound-'
-        self.select_option(
-            css_string=css_string,
-            no_options=2,
-            prob_column=column,
-            option=has_found_new_home,
-        )
-        
-        column = '123_is_in_scotland'
-        is_it_in_scotland = self.data[column].values[0]
-        css_string = 'label[for="AffCalc-q135-RegionCode-'
-        self.select_option(
-            css_string=css_string,
-            no_options=2,
-            prob_column=column,
-            option=is_it_in_scotland,
-        )
-        
-        amount = self.data['1_purchase_price'].values[0]
-        borrowing_amount_input = 'AffCalc-q90-PurchasePrice'
-        self.type_amount(
-            id_string=borrowing_amount_input,
-            amount=amount,
-        )
-        
-        self.next()
+        if purpose == 0:
+            self.step1_buy_new_property()
+        elif purpose == 1:
+            self.step1_remortgage_existing_property()
+        else:
+            self.step1_borrow_more()
+
+    
         
         
         
