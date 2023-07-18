@@ -7,7 +7,7 @@ import time
 class Operations():
     
     def __init__(self):
-        pass
+        super(Operations, self).__init__()
     
     def close_cookies(self):
         """
@@ -89,6 +89,7 @@ class Operations():
         # Client's result
         time.sleep(3)
         amount_element = self.find_element(By.CLASS_NAME, "Amount")
-        amount_text = float(amount_element.text[1:])
-        return amount_text
+        amount_text = amount_element.text.replace('£', '').replace(',', '')
+        print(amount_text)
+        return float(amount_text)
         

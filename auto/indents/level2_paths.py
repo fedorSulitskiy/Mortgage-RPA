@@ -2,7 +2,7 @@ from auto.indents.level3_paths import Level3Paths
 
 class Level2Paths(Level3Paths):
     def __init__(self):
-        pass
+        super(Level2Paths, self).__init__()
     
     def step1_standart_ownership_type(self, new):
         

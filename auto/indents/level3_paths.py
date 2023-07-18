@@ -2,7 +2,7 @@ from auto.opps import Operations
 
 class Level3Paths(Operations):
     def __init__(self):
-        pass
+        super(Level3Paths, self).__init__()
     
     def step3_are_not_employed_for_tax_purposes(self, sj, sub, fixed):
         

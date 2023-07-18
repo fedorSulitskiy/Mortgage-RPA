@@ -134,6 +134,8 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
     * 1_pension
 ### Step 4
 * credit_card_debt
+* how_much_debt_cleared_per_month
+* all_credit_cards_cleared_next_month
 * personal_loans
 * secured_loan_payments
 * buy_now_pay_later
@@ -153,3 +155,6 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
             * 1_1_tenancy_agreement
                 * 1_1_monthly_income
                 * 1_1_monthly_payments
+* council_tax
+* buildings_insurance
+* service_estate_charge

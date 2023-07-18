@@ -1,12 +1,8 @@
 from auto.indents.level2_paths import Level2Paths
 
-import time
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-
 class Level1Paths(Level2Paths):
+    def __init__(self):
+        super(Level1Paths, self).__init__()
     
     def step1_start(self):
         self.close_cookies()
@@ -81,6 +77,7 @@ class Level1Paths(Level2Paths):
         )
         if has_found_new_home == 0:
             self.step1_new_home_found()
+            self.has_found_new_home = True
         elif has_found_new_home == 1:
             pass
         
@@ -690,6 +687,26 @@ class Level1Paths(Level2Paths):
             amount=amount,
         )
         
+        if self.not_buying_new:
+            # Of this amount how much will be cleared on or before completion?
+            amount = self.data['how_much_debt_cleared_per_month'].values[0]
+            id_string = 'AffCalc-q1325-TotalCreditCardBalanceToBeCleared'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
+            
+            # Are all credit cards cleared in full each month?
+            column = 'all_credit_cards_cleared_next_month'
+            value = self.data[column].values[0]
+            css_string = 'label[for="AffCalc-q1328-CreditCardBalanceClearedMonthly-'
+            self.select_option(
+                css_string=css_string,
+                no_options=2,
+                prob_column=column,
+                option=value,
+            )
+            
         # Personal loans and hire purchases?
         amount = self.data['personal_loans'].values[0]
         id_string = 'AffCalc-q1330-MonthlyPersonalLoanOrHire'
@@ -819,3 +836,4 @@ class Level1Paths(Level2Paths):
                 self.step4_they_let_on_this_mortgate(i=i)
             elif value == 1:
                 pass
+            

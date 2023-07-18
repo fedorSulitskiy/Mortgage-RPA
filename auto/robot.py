@@ -18,16 +18,20 @@ class Robot(webdriver.Chrome, Level1Paths):
         self.retired = False
         self.name_of_client = name
         self.surname_of_client = surname
-        
+        self.has_found_new_home = False
+        self.not_buying_new = False
+
         # Set option for chrome to remain open after code stopped running.
         chrome_options = Options()
         chrome_options.add_experimental_option("detach", True)
+        chrome_options.add_experimental_option("excludeSwitches", ['enable-logging'])
         super(Robot, self).__init__(options=chrome_options)
         self.implicitly_wait(5)
 
         # Initialize input data.
         self.df = pd.read_csv("input/input.csv")
         self.data = self.df.loc[((self.df["name"] == name) & (self.df["surname"] == surname))]
+
 
     def open_calc(self, url=const.CALC_URL):
         """
@@ -41,7 +45,6 @@ class Robot(webdriver.Chrome, Level1Paths):
         """
         current_page = self.find_elements(By.CSS_SELECTOR, f'fieldset.Affordability-step.Affordability-step--{step}')[0]
         next_button = current_page.find_elements(By.CLASS_NAME, 'Affordability-nextStep')[0]
-        print(next_button)
         next_button.click()
 
     def flow(self):
@@ -49,7 +52,6 @@ class Robot(webdriver.Chrome, Level1Paths):
         Initialization method. It will trigger the different predetermined paths corresponding to
         the options in the calculator.
         """
-        print("Let's Go!")
 
         # Open calculator
         self.open_calc()
@@ -83,10 +85,9 @@ class Robot(webdriver.Chrome, Level1Paths):
         result = self.get_output()        
         self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_program'] = result
         self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'valid'] = (result == self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_manual'])
-        self.df.to_csv('output/output.csv')
+        self.df.to_csv('input/input.csv', index=False)
         
         self.quit()
-        print('GREAT SUCCESS!!!')
         
     def step1(self):
         # Close cookies and choose number of people borrowing
@@ -105,8 +106,10 @@ class Robot(webdriver.Chrome, Level1Paths):
         if purpose == 0:
             self.step1_buy_new_property()
         elif purpose == 1:
+            self.not_buying_new = True
             self.step1_remortgage_existing_property()
         else:
+            self.not_buying_new = True
             self.step1_borrow_more()
             
         self.purpose = int(purpose)
@@ -250,4 +253,29 @@ class Robot(webdriver.Chrome, Level1Paths):
             self.step4_applicant_has_other_mortgages(value=value)
         elif value == 1:
             pass
+        
+        if self.has_found_new_home or self.not_buying_new:
+            # Council tax?
+            amount = self.data['council_tax'].values[0]
+            id_string = 'AffCalc-q1620-CouncilTax'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
+            
+            # Buildings insurance?
+            amount = self.data['buildings_insurance'].values[0]
+            id_string = 'AffCalc-q1630-BuildingInsurance'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
+            
+            # Service/Estate charges?
+            amount = self.data['service_estate_charge'].values[0]
+            id_string = 'AffCalc-q1640-ServiceCharge'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
         
