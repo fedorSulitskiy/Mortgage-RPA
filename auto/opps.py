@@ -2,6 +2,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import ElementNotInteractableException
+from selenium.common.exceptions import TimeoutException
 import time
 
 class Operations():
@@ -40,10 +42,20 @@ class Operations():
             raise ValueError(f'You can only have either {options_list} options. Value given: {option} from {prob_column}')
         
         option = int(option)
-        css_string = f'{css_string}{option}"]'    
-        menu_option = self.find_elements(By.CSS_SELECTOR, css_string)        
-        menu_option[0].click()
-        
+        css_string = f'{css_string}{option}"]'
+        menu_option = self.find_elements(By.CSS_SELECTOR, css_string)[0]   
+        try:
+            menu_option.click()
+        except ElementNotInteractableException:
+            # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
+            try:
+                WebDriverWait(self, 10).until(
+                    EC.element_to_be_clickable(menu_option)
+                )
+                menu_option.click()
+            except TimeoutException:
+                print("Element is still not clickable after waiting.")
+            
     def type_amount(self, id_string, amount):
         """
         Input the amount of money asked by the calculator.
@@ -52,11 +64,22 @@ class Operations():
             id_string (str): html id string identifying the text input field in question.
             amount (int): amount of money input into the text field
         """
+        amount = int(amount)
         input_field = self.find_elements(By.ID, id_string)[0]
         
-        amount = int(amount)
-        input_field.clear()
-        input_field.send_keys(amount)
+        try:
+            input_field.clear()
+            input_field.send_keys(amount)
+        except ElementNotInteractableException:
+            # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
+            try:
+                WebDriverWait(self, 10).until(
+                    EC.presence_of_element_located(input_field)
+                )
+                input_field.clear()
+                input_field.send_keys(amount)
+            except TimeoutException:
+                print("Element is still not clickable after waiting.")
         
     def select_from_menu(self, id_string, no_options, option, prob_column, plz_select = True,):
         """
@@ -81,8 +104,20 @@ class Operations():
         option = int(option)
         select_element = self.find_elements(By.ID, id_string)[0]
         
-        select = Select(select_element)
-        select.select_by_index(option)
+        try:
+            select = Select(select_element)
+            select.select_by_index(option)
+        except ElementNotInteractableException:
+            # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
+            try:
+                WebDriverWait(self, 10).until(
+                    EC.presence_of_element_located(select)
+                )
+                select = Select(select_element)
+                select.select_by_index(option)
+            except TimeoutException:
+                print("Element is still not clickable after waiting.")
+        
         
     def get_output(self):
         

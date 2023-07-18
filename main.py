@@ -2,6 +2,8 @@ from auto.robot import Robot
 import pandas as pd
 
 def main():
+    
+    # Iterate over the suite of tests.
     df = pd.read_csv('input/input.csv')
     for i in range(len(df)):
         person = df.iloc[i,0:2]
