@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+import time
 
 class Operations():
     
@@ -82,5 +83,12 @@ class Operations():
         
         select = Select(select_element)
         select.select_by_index(option)
-        if id_string == 'AffCalc-q1570-NoOfExistingMortgages':
-            print(select_element.get_attribute("outerHTML"))
+        
+    def get_output(self):
+        
+        # Client's result
+        time.sleep(3)
+        amount_element = self.find_element(By.CLASS_NAME, "Amount")
+        amount_text = float(amount_element.text[1:])
+        return amount_text
+        

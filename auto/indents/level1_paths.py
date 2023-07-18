@@ -1,5 +1,10 @@
 from auto.indents.level2_paths import Level2Paths
+
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 
 class Level1Paths(Level2Paths):
     
@@ -765,19 +770,7 @@ class Level1Paths(Level2Paths):
             amount=amount,
         )
         
-    def step4_applicant_has_other_mortgages(self):
-        # How many other mortgages does the first applicant have?
-        column = '1_how_many'
-        value = self.data[column].values[0]
-        no_mortgages_input_id = 'AffCalc-q1570-NoOfExistingMortgages'
-        self.select_from_menu(
-            id_string=no_mortgages_input_id,
-            no_options=6,
-            option=value,
-            prob_column=column,
-            plz_select=False,
-        )
-        print(value)
+    def step4_applicant_has_other_mortgages(self, value):
         
         for i in range(int(value)):
             

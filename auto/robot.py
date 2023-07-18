@@ -13,6 +13,12 @@ class Robot(webdriver.Chrome, Level1Paths):
     Robot class which will perform automated scraping.
     """
     def __init__(self, name, surname):
+        # Persistent data
+        self.purpose = 0
+        self.retired = False
+        self.name_of_client = name
+        self.surname_of_client = surname
+        
         # Set option for chrome to remain open after code stopped running.
         chrome_options = Options()
         chrome_options.add_experimental_option("detach", True)
@@ -20,12 +26,8 @@ class Robot(webdriver.Chrome, Level1Paths):
         self.implicitly_wait(5)
 
         # Initialize input data.
-        df = pd.read_csv("input/input.csv")
-        self.data = df.loc[((df["name"] == name) & (df["surname"] == surname))]
-        
-        # Persistent data
-        self.purpose = 0
-        self.retired = False
+        self.df = pd.read_csv("input/input.csv")
+        self.data = self.df.loc[((self.df["name"] == name) & (self.df["surname"] == surname))]
 
     def open_calc(self, url=const.CALC_URL):
         """
@@ -42,7 +44,7 @@ class Robot(webdriver.Chrome, Level1Paths):
         print(next_button)
         next_button.click()
 
-    def start(self):
+    def flow(self):
         """
         Initialization method. It will trigger the different predetermined paths corresponding to
         the options in the calculator.
@@ -77,6 +79,11 @@ class Robot(webdriver.Chrome, Level1Paths):
         # Move towards the finish
         self.next(step=3)
         
+        # Get final result and store in the input table
+        result = self.get_output()        
+        self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_program'] = result
+        self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'valid'] = (result == self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_manual'])
+        self.df.to_csv('output/output.csv')
         print('GREAT SUCCESS!!!')
         
     def step1(self):
@@ -226,6 +233,19 @@ class Robot(webdriver.Chrome, Level1Paths):
             option=value,
         )
         if value == 0:
-            self.step4_applicant_has_other_mortgages()
+            # How many other mortgages does the first applicant have?
+            column = '1_how_many'
+            value = self.data[column].values[0]
+            
+            no_mortgages_input_id = 'AffCalc-q1570-NoOfExistingMortgages'
+            self.select_from_menu(
+                id_string=no_mortgages_input_id,
+                no_options=6,
+                option=value,
+                prob_column=column,
+                plz_select=False,
+            )
+            self.step4_applicant_has_other_mortgages(value=value)
         elif value == 1:
             pass
+        
