@@ -84,6 +84,8 @@ class Robot(webdriver.Chrome, Level1Paths):
         self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_program'] = result
         self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'valid'] = (result == self.df.loc[((self.df["name"] == self.name_of_client) & (self.df["surname"] == self.surname_of_client)), 'output_manual'])
         self.df.to_csv('output/output.csv')
+        
+        self.quit()
         print('GREAT SUCCESS!!!')
         
     def step1(self):
