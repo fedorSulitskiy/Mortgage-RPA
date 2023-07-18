@@ -1,6 +1,12 @@
 from auto.opps import Operations
 
 class Level3Paths(Operations):
+    """
+    Third layer of input and decision methods.
+
+    Args:
+        Operations (class): Fundamental operations required to input data into the calculator.
+    """
     def __init__(self):
         super(Level3Paths, self).__init__()
     

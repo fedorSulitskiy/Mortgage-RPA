@@ -7,7 +7,9 @@ from selenium.common.exceptions import TimeoutException
 import time
 
 class Operations():
-    
+    """
+    Fundamental operations required to input data into the calculator.
+    """
     def __init__(self):
         super(Operations, self).__init__()
     
@@ -120,11 +122,16 @@ class Operations():
         
         
     def get_output(self):
+        """
+        Final method to be executed as it collects the final calculation from the affordability calculator.
+
+        Returns:
+            float: amount of money in £GBP the bank would be willing to lend according to inputs. 
+        """
         
         # Client's result
         time.sleep(3)
         amount_element = self.find_element(By.CLASS_NAME, "Amount")
         amount_text = amount_element.text.replace('£', '').replace(',', '')
-        print(amount_text)
         return float(amount_text)
         
