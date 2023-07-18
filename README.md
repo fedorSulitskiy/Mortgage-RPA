@@ -54,7 +54,7 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
         * 125_commission
         * 2_time_contracting
         * 2_time_remaining
-        * 34_employer_for_tax
+        * 34_employed_for_tax
             * 12_time_on_job
             * 12_time_remaining
             * 1_salary_before_tax
@@ -76,42 +76,43 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
     * 5_salary_div_latest
     * 5_salary_div_previous
     * 12345_second_job
-        * 1_sj_type_of_contract
-            * 1_sj_no_years_on_job
-            * 125_sj_salary_before_tax
-            * 125_sj_bonus
-            * 125_sj_overtime
-            * 125_sj_commission
-            * 2_sj_time_contracting
-            * 2_sj_time_remaining
-            * 34_sj_employer_for_tax
-                * 12_sj_time_on_job
-                * 12_sj_time_remaining
-                * 1_sj_salary_before_tax
-                * 1_sj_bonus
-                * 1_sj_overtime
-                * 1_sj_commission
-                * 2_sj_net_profit_latest
-                * 2_sj_net_profit_previous
-            * 5_sj_time_in_regular_work
-        * 2345_sj_time_in_business
-        * 2_sj_share_of_profit_latest
-        * 2_sj_share_of_profit_previous
-        * 3_sj_net_profit_latest
-        * 3_sj_net_profit_previous
-        * 4_sj_salary_before_tax
-        * 4_sj_bonus
-        * 4_sj_overtime
-        * 4_sj_commission
-        * 5_sj_salary_div_latest
-        * 5_sj_salary_div_previous
+        * 1_employment_status
+            * 1_sj_type_of_contract
+                * 1_sj_no_years_on_job
+                * 125_sj_salary_before_tax
+                * 125_sj_bonus
+                * 125_sj_overtime
+                * 125_sj_commission
+                * 2_sj_time_contracting
+                * 2_sj_time_remaining
+                * 34_sj_employed_for_tax
+                    * 12_sj_time_on_job
+                    * 12_sj_time_remaining
+                    * 1_sj_salary_before_tax
+                    * 1_sj_bonus
+                    * 1_sj_overtime
+                    * 1_sj_commission
+                    * 2_sj_net_profit_latest
+                    * 2_sj_net_profit_previous
+                * 5_sj_time_in_regular_work
+            * 2345_sj_time_in_business
+            * 2_sj_share_of_profit_latest
+            * 2_sj_share_of_profit_previous
+            * 3_sj_net_profit_latest
+            * 3_sj_net_profit_previous
+            * 4_sj_salary_before_tax
+            * 4_sj_bonus
+            * 4_sj_overtime
+            * 4_sj_commission
+            * 5_sj_salary_div_latest
+            * 5_sj_salary_div_previous
 * other_income
     * 1_investments
     * 1_rent
     * 1_disability_benefits
     * 1_tax_credits
     * 1_child_benefits
-    * 1_maintantance_income
+    * 1_maintenance_income
     * 1_pension
 ### Step 4
 * credit_card_debt

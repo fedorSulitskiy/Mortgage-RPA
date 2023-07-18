@@ -1,6 +1,6 @@
-from auto.opps import Operations
+from auto.indents.level3_paths import Level3Paths
 
-class Level2Paths(Operations):
+class Level2Paths(Level3Paths):
     def __init__(self):
         pass
     
@@ -146,4 +146,219 @@ class Level2Paths(Operations):
             id_string=term_length_months,
             amount=months,
         )
+
+    def step3_permanent(self, sj):
         
+        # How long have they been in their job?
+        term = self.data[f'1{sj}_no_years_on_job'].values[0].split(",")
+        years = term[0]
+        months = term[1]
+        if sj == '_sj': 
+            term_length_years = 'AffCalc-q460-JobYears'
+            term_length_months = 'AffCalc-q460-JobMonths'
+        else:
+            term_length_years = 'AffCalc-q270-JobYears'
+            term_length_months = 'AffCalc-q270-JobMonths'
+        self.type_amount(
+            id_string=term_length_years,
+            amount=years,
+        ) 
+        self.type_amount(
+            id_string=term_length_months,
+            amount=months,
+        )
+        
+        # What's their salary before tax?
+        amount = self.data[f'125{sj}_salary_before_tax'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q510-GrossAnnualIncome'
+        else: id_string = 'AffCalc-q320-GrossAnnualIncome'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any bonus?
+        amount = self.data[f'125{sj}_bonus'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q520-Bonus'
+        else: id_string = 'AffCalc-q330-Bonus'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any overtime?
+        amount = self.data[f'125{sj}_overtime'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q530-Overtime'
+        else: id_string = 'AffCalc-q340-Overtime'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any commission?
+        amount = self.data[f'125{sj}_comission'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q540-Commission'
+        else: id_string = 'AffCalc-q350-Commission'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+    
+    def step3_fixed_term_contract(self, sj, sub = False, fixed = True):
+        
+        # How long have they been in their job?
+        if sub: term = self.data[f'12{sj}_time_on_job'].values[0].split(",")
+        else: term = self.data[f'2{sj}_time_contracting'].values[0].split(",")
+        years = term[0]
+        months = term[1]
+        if sj == '_sj': 
+            term_length_years = 'AffCalc-q300-ContractYears'
+            term_length_months = 'AffCalc-q300-ContractMonths'
+        else:
+            term_length_years = 'AffCalc-q490-ContractYears'
+            term_length_months = 'AffCalc-q490-ContractMonths'
+        self.type_amount(
+            id_string=term_length_years,
+            amount=years,
+        ) 
+        self.type_amount(
+            id_string=term_length_months,
+            amount=months,
+        )
+        
+        if fixed:
+            # What's the remaining term on their contract?
+            if sub: term = self.data[f'12{sj}_time_remaining'].values[0].split(",")
+            else: term = self.data[f'2{sj}_time_remaining'].values[0].split(",")
+            years = term[0]
+            months = term[1]
+            if sj == '_sj': 
+                term_length_years = 'AffCalc-q310-ContractYears'
+                term_length_months = 'AffCalc-q310-ContractMonths'
+            else:
+                term_length_years = 'AffCalc-q500-ContractYears'
+                term_length_months = 'AffCalc-q500-ContractMonths'
+            self.type_amount(
+                id_string=term_length_years,
+                amount=years,
+            ) 
+            self.type_amount(
+                id_string=term_length_months,
+                amount=months,
+            )
+        
+        # What's their salary before tax?
+        if sub: amount = self.data[f'1{sj}_salary_before_tax'].values[0]
+        else: amount = self.data[f'125{sj}_salary_before_tax'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q510-GrossAnnualIncome'
+        else: id_string = 'AffCalc-q320-GrossAnnualIncome'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any bonus?
+        if sub: amount = self.data[f'1{sj}_bonus'].values[0]
+        else: amount = self.data[f'125{sj}_bonus'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q520-Bonus'
+        else: id_string = 'AffCalc-q330-Bonus'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any overtime?
+        if sub: amount = self.data[f'1{sj}_overtime'].values[0]
+        else: amount = self.data[f'125{sj}_overtime'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q530-Overtime'
+        else: id_string = 'AffCalc-q340-Overtime'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any commission?
+        if sub: amount = self.data[f'1{sj}_comission'].values[0]
+        else: amount = self.data[f'125{sj}_comission'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q540-Commission'
+        else: id_string = 'AffCalc-q350-Commission'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+    
+    def step3_sub_contract(self, sj, fixed):
+        
+        # Are they treated as employed for tax purposes?
+        column = '34_employed_for_tax'
+        value = self.data[column].values[0]
+        css_string = 'label[for="AffCalc-q260-TreatedAsEmployedForTax-'
+        self.select_option(
+            css_string=css_string,
+            no_options=2,
+            prob_column=column,
+            option=value,
+        )
+        if value == 0:
+            self.step3_fixed_term_contract(sj=sj, sub=True, fixed=fixed)
+        elif value == 1:
+            self.step3_are_not_employed_for_tax_purposes(sj=sj, sub=True, fixed=fixed)
+    
+    def step3_temporary(self, sj):
+        
+        # How long have they been in their job?
+        term = self.data[f'2{sj}_time_in_regular_work'].values[0].split(",")
+        years = term[0]
+        months = term[1]
+        if sj == '_sj': 
+            term_length_years = 'AffCalc-q290-RegularYears'
+            term_length_months = 'AffCalc-q290-RegularMonths'
+        else:
+            term_length_years = 'AffCalc-q480-RegularYears'
+            term_length_months = 'AffCalc-q480-RegularMonths'
+        self.type_amount(
+            id_string=term_length_years,
+            amount=years,
+        ) 
+        self.type_amount(
+            id_string=term_length_months,
+            amount=months,
+        )
+        
+        # What's their salary before tax?
+        amount = self.data[f'125{sj}_salary_before_tax'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q510-GrossAnnualIncome'
+        else: id_string = 'AffCalc-q320-GrossAnnualIncome'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any bonus?
+        amount = self.data[f'125{sj}_bonus'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q520-Bonus'
+        else: id_string = 'AffCalc-q330-Bonus'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any overtime?
+        amount = self.data[f'125{sj}_overtime'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q530-Overtime'
+        else: id_string = 'AffCalc-q340-Overtime'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        ) 
+        
+        # Do they earn any commission?
+        amount = self.data[f'125{sj}_comission'].values[0]
+        if sj == '_sj': id_string = 'AffCalc-q540-Commission'
+        else: id_string = 'AffCalc-q350-Commission'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+    
