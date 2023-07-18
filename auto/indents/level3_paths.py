@@ -12,11 +12,11 @@ class Level3Paths(Operations):
         years = term[0]
         months = term[1]
         if sj == '_sj': 
-            term_length_years = 'AffCalc-q300-ContractYears'
-            term_length_months = 'AffCalc-q300-ContractMonths'
+            term_length_years = 'AffCalc-q460-JobYears'
+            term_length_months = 'AffCalc-q460-JobMonths'
         else:
-            term_length_years = 'AffCalc-q490-ContractYears'
-            term_length_months = 'AffCalc-q490-ContractMonths'
+            term_length_years = 'AffCalc-q270-JobYears'
+            term_length_months = 'AffCalc-q270-JobMonths'
         self.type_amount(
             id_string=term_length_years,
             amount=years,
@@ -64,4 +64,20 @@ class Level3Paths(Operations):
             id_string=id_string,
             amount=amount,
         )
+    
+    def step4_tenancy_agreement_in_place(self, i):
+        # What's the monthly rental income?
+        amount = self.data[f'1_{i+1}_monthly_income'].values[0]
+        id_string = f'AffCalc-q1580-{i}-5-MonthlyRentalIncome'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
         
+        # What are their monthly mortgage payments?
+        amount = self.data[f'1_{i+1}_monthly_payments'].values[0]
+        id_string = f'AffCalc-q1580-{i}-6-MonthlyPayments'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )

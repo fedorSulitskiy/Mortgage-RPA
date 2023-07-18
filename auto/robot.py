@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 import pandas as pd
+import time
 
 class Robot(webdriver.Chrome, Level1Paths):
     """
@@ -16,6 +17,7 @@ class Robot(webdriver.Chrome, Level1Paths):
         chrome_options = Options()
         chrome_options.add_experimental_option("detach", True)
         super(Robot, self).__init__(options=chrome_options)
+        self.implicitly_wait(5)
 
         # Initialize input data.
         df = pd.read_csv("input/input.csv")
@@ -61,9 +63,21 @@ class Robot(webdriver.Chrome, Level1Paths):
         
         # Move to step 3
         self.next(step=1)
+        time.sleep(0.2) # Selenium needs to be slowed down a little here
         
         # Trigger step 3 chain of decisions
         self.step3()
+        
+        # Move to step 4
+        self.next(step=2)
+        
+        # Trigger step 4 chain of decisions
+        self.step4()
+        
+        # Move towards the finish
+        self.next(step=3)
+        
+        print('GREAT SUCCESS!!!')
         
     def step1(self):
         # Close cookies and choose number of people borrowing
@@ -118,13 +132,12 @@ class Robot(webdriver.Chrome, Level1Paths):
             option=value,
         )
         if value == 0:
+            self.retired = True
             pass
         elif value == 1:
-            self.step2_client_is_retired()
-            self.retired = True
+            self.step2_client_is_not_retired()
             
     def step3(self):
-        
         if not self.retired:
             # Starting parameters for the first job
             id = 240
@@ -195,5 +208,24 @@ class Robot(webdriver.Chrome, Level1Paths):
         )
         if value == 0:
             self.step3_has_other_income()
+        elif value == 1:
+            pass
+        
+    def step4(self):
+        # Input all general outgoings and regular costs
+        self.step4_start()
+        
+        # Does the first applicant have any other mortgages?
+        column = 'other_mortgages'
+        value = self.data[column].values[0]
+        css_string = 'label[for="AffCalc-q1540-HasExistingMortgages-'
+        self.select_option(
+            css_string=css_string,
+            no_options=2,
+            prob_column=column,
+            option=value,
+        )
+        if value == 0:
+            self.step4_applicant_has_other_mortgages()
         elif value == 1:
             pass

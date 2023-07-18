@@ -71,13 +71,16 @@ class Operations():
         Raises:
             ValueError: error raised when input index is outside the range of the menu.
         """
-        options_list = [i+1 for i in range(no_options)]
+        if plz_select: options_list = [i+1 for i in range(no_options)]
+        else: options_list = [i for i in range(no_options)]
         if int(option) not in options_list:
             # self.quit()
             raise ValueError(f'You can only have either {options_list} options. Value given: {option} from {prob_column}.')
         
         option = int(option)
         select_element = self.find_elements(By.ID, id_string)[0]
+        
         select = Select(select_element)
         select.select_by_index(option)
-        
+        if id_string == 'AffCalc-q1570-NoOfExistingMortgages':
+            print(select_element.get_attribute("outerHTML"))

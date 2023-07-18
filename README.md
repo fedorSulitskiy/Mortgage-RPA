@@ -50,8 +50,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
         * 1_no_years_on_job
         * 125_salary_before_tax
         * 125_bonus
+        * 125_how_often_bonus_paid
         * 125_overtime
+        * 125_how_often_overtime_paid
         * 125_commission
+        * 125_how_often_commission_paid
         * 2_time_contracting
         * 2_time_remaining
         * 34_employed_for_tax
@@ -59,8 +62,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
             * 12_time_remaining
             * 1_salary_before_tax
             * 1_bonus
+            * 1_how_often_bonus_paid
             * 1_overtime
+            * 1_how_often_overtime_paid
             * 1_commission
+            * 1_how_often_commission_paid
             * 2_net_profit_latest
             * 2_net_profit_previous
         * 5_time_in_regular_work
@@ -71,8 +77,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
     * 3_net_profit_previous
     * 4_salary_before_tax
     * 4_bonus
+    * 4_how_often_bonus_paid
     * 4_overtime
+    * 4_how_often_overtime_paid
     * 4_commission
+    * 4_how_often_commission_paid
     * 5_salary_div_latest
     * 5_salary_div_previous
     * 12345_second_job
@@ -81,8 +90,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
                 * 1_sj_no_years_on_job
                 * 125_sj_salary_before_tax
                 * 125_sj_bonus
+                * 125_sj_how_often_bonus_paid
                 * 125_sj_overtime
+                * 125_sj_how_often_overtime_paid
                 * 125_sj_commission
+                * 125_sj_how_often_commission_paid
                 * 2_sj_time_contracting
                 * 2_sj_time_remaining
                 * 34_sj_employed_for_tax
@@ -90,8 +102,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
                     * 12_sj_time_remaining
                     * 1_sj_salary_before_tax
                     * 1_sj_bonus
+                    * 1_sj_how_often_bonus_paid
                     * 1_sj_overtime
+                    * 1_sj_how_often_overtime_paid
                     * 1_sj_commission
+                    * 1_sj_how_often_commission_paid
                     * 2_sj_net_profit_latest
                     * 2_sj_net_profit_previous
                 * 5_sj_time_in_regular_work
@@ -102,8 +117,11 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
             * 3_sj_net_profit_previous
             * 4_sj_salary_before_tax
             * 4_sj_bonus
+            * 4_sj_how_often_bonus_paid
             * 4_sj_overtime
+            * 4_sj_how_often_overtime_paid
             * 4_sj_commission
+            * 4_sj_how_often_commission_paid
             * 5_sj_salary_div_latest
             * 5_sj_salary_div_previous
 * other_income
@@ -120,6 +138,7 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
 * secured_loan_payments
 * buy_now_pay_later
 * travel
+* student_loans
 * other
 * childcare
 * school_fees

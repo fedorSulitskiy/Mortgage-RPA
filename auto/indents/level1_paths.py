@@ -1,8 +1,7 @@
 from auto.indents.level2_paths import Level2Paths
+import time
 
 class Level1Paths(Level2Paths):
-    def __init__(self):
-        pass
     
     def step1_start(self):
         self.close_cookies()
@@ -365,7 +364,7 @@ class Level1Paths(Level2Paths):
             amount=aged18_over,
         )
         
-    def step2_client_is_retired(self):
+    def step2_client_is_not_retired(self):
         
         # What's their planned retirement age?
         amount = self.data['1_planned_retirement_age'].values[0]
@@ -469,11 +468,11 @@ class Level1Paths(Level2Paths):
         years = term[0]
         months = term[1]
         if sj == '_sj': 
-            term_length_years = 'AffCalc-q280-BusinessYears'
-            term_length_months = 'AffCalc-q280-BusinessMonths'
-        else:
             term_length_years = 'AffCalc-q470-BusinessYears'
             term_length_months = 'AffCalc-q470-BusinessMonths'
+        else:
+            term_length_years = 'AffCalc-q280-BusinessYears'
+            term_length_months = 'AffCalc-q280-BusinessMonths'
         self.type_amount(
             id_string=term_length_years,
             amount=years,
@@ -508,11 +507,11 @@ class Level1Paths(Level2Paths):
         years = term[0]
         months = term[1]
         if sj == '_sj': 
-            term_length_years = 'AffCalc-q280-BusinessYears'
-            term_length_months = 'AffCalc-q280-BusinessMonths'
-        else:
             term_length_years = 'AffCalc-q470-BusinessYears'
             term_length_months = 'AffCalc-q470-BusinessMonths'
+        else:
+            term_length_years = 'AffCalc-q280-BusinessYears'
+            term_length_months = 'AffCalc-q280-BusinessMonths'
         self.type_amount(
             id_string=term_length_years,
             amount=years,
@@ -571,31 +570,71 @@ class Level1Paths(Level2Paths):
         ) 
         
         # Do they earn any bonus?
-        amount = self.data[f'4{sj}_bonus'].values[0]
+        amount_bonus = self.data[f'4{sj}_bonus'].values[0]
         if sj == '_sj': id_string = 'AffCalc-q520-Bonus'
         else: id_string = 'AffCalc-q330-Bonus'
         self.type_amount(
             id_string=id_string,
-            amount=amount,
-        ) 
+            amount=amount_bonus,
+        )
         
         # Do they earn any overtime?
-        amount = self.data[f'4{sj}_overtime'].values[0]
+        amount_overtime = self.data[f'4{sj}_overtime'].values[0]
         if sj == '_sj': id_string = 'AffCalc-q530-Overtime'
         else: id_string = 'AffCalc-q340-Overtime'
         self.type_amount(
             id_string=id_string,
-            amount=amount,
-        ) 
+            amount=amount_overtime,
+        )
         
         # Do they earn any commission?
-        amount = self.data[f'4{sj}_comission'].values[0]
+        amount_commission = self.data[f'4{sj}_commission'].values[0]
         if sj == '_sj': id_string = 'AffCalc-q540-Commission'
         else: id_string = 'AffCalc-q350-Commission'
         self.type_amount(
             id_string=id_string,
-            amount=amount,
+            amount=amount_commission,
         )
+            
+        if amount_bonus > 0:
+            # How often is the bonus paid?
+            column = f'4{sj}_how_often_bonus_paid'
+            value = self.data[column].values[0]
+            if sj == '_sj': id_string = 'AffCalc-q525-BonusFrequency'
+            else: id_string = 'AffCalc-q335-BonusFrequency'
+            self.select_from_menu(
+                id_string=id_string,
+                no_options=5,
+                option=value,
+                prob_column=column,
+                plz_select=True,
+            )
+        if amount_overtime > 0:
+            # How often is the overtime paid?
+            column = f'4{sj}_how_often_overtime_paid'
+            value = self.data[column].values[0]
+            if sj == '_sj': id_string = 'AffCalc-q535-OvertimeFrequency'
+            else: id_string = 'AffCalc-q345-OvertimeFrequency'
+            self.select_from_menu(
+                id_string=id_string,
+                no_options=5,
+                option=value,
+                prob_column=column,
+                plz_select=True,
+            )
+        if amount_commission > 0:
+            # How often is the commision paid?
+            column = f'4{sj}_how_often_commission_paid'
+            value = self.data[column].values[0]
+            if sj == '_sj': id_string = 'AffCalc-q545-CommissionFrequency'
+            else: id_string = 'AffCalc-q355-CommissionFrequency'
+            self.select_from_menu(
+                id_string=id_string,
+                no_options=5,
+                option=value,
+                prob_column=column,
+                plz_select=True,
+            )
     
     def step3_director_more_20(self, sj):
         
@@ -604,11 +643,11 @@ class Level1Paths(Level2Paths):
         years = term[0]
         months = term[1]
         if sj == '_sj': 
-            term_length_years = 'AffCalc-q280-BusinessYears'
-            term_length_months = 'AffCalc-q280-BusinessMonths'
-        else:
             term_length_years = 'AffCalc-q470-BusinessYears'
             term_length_months = 'AffCalc-q470-BusinessMonths'
+        else:
+            term_length_years = 'AffCalc-q280-BusinessYears'
+            term_length_months = 'AffCalc-q280-BusinessMonths'
         self.type_amount(
             id_string=term_length_years,
             amount=years,
@@ -635,3 +674,155 @@ class Level1Paths(Level2Paths):
             id_string=id_string,
             amount=amount,
         )
+        
+    def step4_start(self):
+        
+        # What's the total your client owes on all credit cards?
+        amount = self.data['credit_card_debt'].values[0]
+        id_string = 'AffCalc-q1320-TotalCreditCardBalances'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Personal loans and hire purchases?
+        amount = self.data['personal_loans'].values[0]
+        id_string = 'AffCalc-q1330-MonthlyPersonalLoanOrHire'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Secured loan payments?
+        amount = self.data['secured_loan_payments'].values[0]
+        id_string = 'AffCalc-q1340-MonthlySecuredLoanPayments'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Buy now, pay later agreements?
+        amount = self.data['buy_now_pay_later'].values[0]
+        id_string = 'AffCalc-q1350-MonthlyDpaPayment'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Student loan payments?
+        amount = self.data['student_loans'].values[0]
+        id_string = 'AffCalc-q1360-MonthlyStudentLoan'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Travel?
+        amount = self.data['travel'].values[0]
+        id_string = 'AffCalc-q1370-MonthlyTravelCosts'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Other regular monthly costs, if any?
+        amount = self.data['other'].values[0]
+        id_string = 'AffCalc-q1380-MonthlyOtherExpenditure'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Childcare?
+        amount = self.data['childcare'].values[0]
+        id_string = 'AffCalc-q1390-MonthlyChildCare'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # School fees?
+        amount = self.data['school_fees'].values[0]
+        id_string = 'AffCalc-q1400-MonthlySchoolFees'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Maintenance?
+        amount = self.data['maintenance'].values[0]
+        id_string = 'AffCalc-q1410-MonthlyDependentMaintenance'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+        # Any additional costs for financial dependants?
+        amount = self.data['additional_costs_dependents'].values[0]
+        id_string = 'AffCalc-q1420-MonthlyCostOfFinancialDependents'
+        self.type_amount(
+            id_string=id_string,
+            amount=amount,
+        )
+        
+    def step4_applicant_has_other_mortgages(self):
+        # How many other mortgages does the first applicant have?
+        column = '1_how_many'
+        value = self.data[column].values[0]
+        no_mortgages_input_id = 'AffCalc-q1570-NoOfExistingMortgages'
+        self.select_from_menu(
+            id_string=no_mortgages_input_id,
+            no_options=6,
+            option=value,
+            prob_column=column,
+            plz_select=False,
+        )
+        print(value)
+        
+        for i in range(int(value)):
+            
+            # What will the total balance be on this other mortgage?
+            amount = self.data[f'1_{i+1}_total_balance'].values[0]
+            id_string = f'AffCalc-q1580-{i}-0-TotalBalance'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
+            
+            # What will the interest-only balance be on this other mortgage?
+            amount = self.data[f'1_{i+1}_interest_only_balance'].values[0]
+            id_string = f'AffCalc-q1580-{i}-1-InterestOnlyBalance'
+            self.type_amount(
+                id_string=id_string,
+                amount=amount,
+            )
+            
+            # What will the remaining term of the loan be?
+            term = self.data[f'1_{i+1}_remaining_term'].values[0].split(",")
+            years = term[0]
+            months = term[1]
+            term_length_years = f'AffCalc-q1580-{i}-2-RemainingTermOfLoanYY'
+            self.type_amount(
+                id_string=term_length_years,
+                amount=years,
+            )
+            term_length_months = f'AffCalc-q1580-{i}-2-RemainingTermOfLoanMM'
+            self.type_amount(
+                id_string=term_length_months,
+                amount=months,
+            )
+            
+            # Does your client let the property linked to this mortgage?
+            column = f'1_{i+1}_do_they_let'
+            value = self.data[column].values[0]
+            css_string = f'label[for="AffCalc-q1580-{i}-3-PropertyLet-'
+            self.select_option(
+                css_string=css_string,
+                no_options=2,
+                prob_column=column,
+                option=value,
+            ) 
+            if value == 0:
+                self.step4_they_let_on_this_mortgate(i=i)
+            elif value == 1:
+                pass
