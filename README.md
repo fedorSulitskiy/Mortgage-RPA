@@ -4,6 +4,8 @@ I have designed an __almost__ comprehensive, RPA (Robotic Process Automation) pr
 
 It is designed to be able to take in __any__ combination of inputs the afforability calculator is able to handle, __subject to__ limitations mentioned below, hence it is __almost__ comprehensive.
 
+![Example of operations.](https://github.com/fedorSulitskiy/Mortgage-RPA/blob/main/README_media/example_of_use.gif)
+
 ## How to use.
 
 Although it is a limitation in its own right, since it is unnecessary, the chromedriver.exe for verion 114.0.5735 is included in the repository meaning if your chrome is of the same general version there is no need to install a new one. I am aware that a better practice would be to access the chromedriver through PATH, but in this case I was more focused on immediate usability, without requiring the user to download the new chromedriver, or missing with PATH variables.
@@ -20,13 +22,15 @@ __(optional) Step 4__ - Rerun the program, changing the restart_index variable i
 
 Validation table will be returned upon completion of the program and will be available in the initial input.csv file.
 
+![Screenshot of validation table returned.](https://github.com/fedorSulitskiy/Mortgage-RPA/blob/main/README_media/final_output.png)
+
 ## Guide to input fields
 
 Within the input table there is a number of fields which roughly follow and correspond to most potential inputs within the calculator. Hence to use the tool each field must be filled in according to the order and logic supplied by the calculator itself, so that the program can successfully execute the inputs. 
 
 __Hence it is recommended to reference the Input Fields array below whenever setting the data in the input.csv file. The procedure that works best is to have the calculator open, input the data into it and mirror the inputs to the input.csv file.__
 
-Indented parts are conditional on the selection of the previous unindented field. For example:
+The input array starts with name and surname which are not essential for the calculator but were my creative choice to uniquely identify each test scenario. Naturally I have called everyone "John". The indented parts are conditional on the selection of the previous unindented field. For example:
 
 * `employment_status`
     * `1_type_of_contract`
