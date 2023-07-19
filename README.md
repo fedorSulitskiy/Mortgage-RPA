@@ -1,4 +1,10 @@
-### Guide to input fields
+## Testing
+
+### Step 1:
+
+
+
+## Guide to input fields
 
 Indented parts are conditional on the selection of the previous unindented field. For example:
 
@@ -13,8 +19,8 @@ Notable mention is on __step 3__ where employment status is concerned. When a se
 
 Furthermore on __step 4__ there is a section where user is asked how many mortgages their client has, which once again requires repetition of identical fiends corresponding to each mortgage. Here I use a similar convention to the one above: `<index>_<mortgage number>_<column name>`.
 
-### Input fields:
-#### Step 1
+## Input fields:
+### Step 1
 * name
 * surname
 * no_people_buying
@@ -37,14 +43,14 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
         * 2_existing_term
     * 3_outstanding_balance
     * 3_interest_only_basis
-#### Step 2
+### Step 2
 * birth_date
 * individual_status
 * dependent_children
     * 1_no_of_dependent_children
 * retirement_status
     * 1_planned_retirement_age
-#### Step 3
+### Step 3
 * employment_status
     * 1_type_of_contract
         * 1_no_years_on_job
@@ -158,3 +164,4 @@ Furthermore on __step 4__ there is a section where user is asked how many mortga
 * council_tax
 * buildings_insurance
 * service_estate_charge
+* ground_rent

@@ -51,9 +51,7 @@ class Operations():
         except ElementNotInteractableException:
             # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
             try:
-                WebDriverWait(self, 10).until(
-                    EC.element_to_be_clickable(menu_option)
-                )
+                time.sleep(3)
                 menu_option.click()
             except TimeoutException:
                 print("Element is still not clickable after waiting.")
@@ -75,9 +73,7 @@ class Operations():
         except ElementNotInteractableException:
             # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
             try:
-                WebDriverWait(self, 10).until(
-                    EC.presence_of_element_located(input_field)
-                )
+                time.sleep(3)
                 input_field.clear()
                 input_field.send_keys(amount)
             except TimeoutException:
@@ -112,9 +108,7 @@ class Operations():
         except ElementNotInteractableException:
             # If ElementNotInteractableException is raised, wait for the element to be clickable and retry
             try:
-                WebDriverWait(self, 10).until(
-                    EC.presence_of_element_located(select)
-                )
+                time.sleep(3)
                 select = Select(select_element)
                 select.select_by_index(option)
             except TimeoutException:
