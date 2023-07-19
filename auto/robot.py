@@ -1,4 +1,3 @@
-import constants as const
 from auto.indents.level1_paths import Level1Paths
 
 from selenium import webdriver
@@ -7,6 +6,8 @@ from selenium.webdriver.common.by import By
 
 import pandas as pd
 import time
+
+CALC_URL = 'https://www.nationwide-intermediary.co.uk/calculators/affordability-calculator'
 
 class Robot(webdriver.Chrome, Level1Paths):
     """
@@ -264,7 +265,7 @@ class Robot(webdriver.Chrome, Level1Paths):
                 plz_select=True,
             )
     
-    def open_calc(self, url=const.CALC_URL):
+    def open_calc(self, url=CALC_URL):
         """
         Opens the online afforability calculator by Nationwide building society.
         """

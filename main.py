@@ -3,7 +3,7 @@ import pandas as pd
 
 # Temporary fix in case program fails mid-execution,
 # sets the index from which the iteration must restart.
-restart_index = 0
+restart_index = 13
 
 def main():
     

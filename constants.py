@@ -1,1 +1,0 @@
-CALC_URL = 'https://www.nationwide-intermediary.co.uk/calculators/affordability-calculator'
